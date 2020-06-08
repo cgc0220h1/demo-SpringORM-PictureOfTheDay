@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -14,11 +15,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import repositories.CommentRepository;
+import repositories.PictureRepository;
+import service.coment.CommentService;
+import service.coment.CommentServiceImp;
+import service.picture.PictureService;
+import service.picture.PictureServiceImp;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -28,6 +34,7 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @ComponentScan("controllers")
+@EnableJpaRepositories("repositories")
 public class AppConfiguration implements ApplicationContextAware, WebMvcConfigurer {
     private ApplicationContext applicationContext;
 
@@ -66,7 +73,7 @@ public class AppConfiguration implements ApplicationContextAware, WebMvcConfigur
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/picture_of_the_day");
         dataSource.setUsername("root");
         dataSource.setPassword("123456");
         return dataSource;
@@ -109,5 +116,15 @@ public class AppConfiguration implements ApplicationContextAware, WebMvcConfigur
         registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
         registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:/static/fonts/");
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
+    }
+
+    @Bean
+    public CommentService commentService(CommentRepository commentRepository) {
+        return new CommentServiceImp(commentRepository);
+    }
+
+    @Bean
+    public PictureService pictureService(PictureRepository pictureRepository) {
+        return new PictureServiceImp(pictureRepository);
     }
 }
