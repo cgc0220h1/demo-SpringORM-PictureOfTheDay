@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+<body>
+<img id="img-of-the-day" alt="image" src="#">
+<script>
+    let query = "https://api.unsplash.com/collections/featured?page=1&client_id=IdusRIk1r39o-uOTKwKK0hmrf4Tb1Au9QI4L78NYtoQ"
+    let request = new XMLHttpRequest();
+    request.open('GET', query);
+    request.onload = function () {
+        if (request.status === 200) {
+            let response = JSON.parse(request.responseText);
+            console.log(response);
+            console.log(response[0]);
+            console.log(response[0].cover_photo.urls.full);
+            document.getElementById("img-of-the-day").setAttribute("src", response[0].cover_photo.urls.full);
+        }
+    }
+    request.send();
+</script>
+</body>
+</html>
