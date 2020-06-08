@@ -1,11 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home Page</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+    <title>Title</title>
 </head>
 <body>
-<img id="img-of-the-day" alt="image" src="#">
+
+<div class="site-wrap">
+
+    <div class="site-mobile-menu">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div>
+
+    <header th:replace="layout :: header"></header>
+
+    <div class="site-section bg-light">
+        <div class="container">
+            <div class="row">
+                <th:block th:each="number:${#numbers.sequence(1,6)}">
+                    <div class="col-lg-6 mb-4">
+                        <div class="entry2">
+                            <a href="single.html" th:id="${'image-link-' + number}">
+                                <img src="images/img_1.jpg" alt="Image" class="img-fluid rounded"
+                                     th:id="${'image-pic-' + number}" id="image-pic">
+                            </a>
+                            <div class="excerpt">
+                            <span class="post-category text-white bg-secondary mb-3"
+                                  th:id="${'image-category-'+ number}" id="image-category">Chủ đề ảnh</span>
+                                <h2>
+                                    <a href="single.html" th:id="${'image-title-' + number}" id="image-title">Tiêu đề
+                                        ảnh</a>
+                                </h2>
+                                <div class="post-meta align-items-center text-left clearfix">
+                                    <figure class="author-figure mb-0 mr-3 float-left">
+                                        <img src="images/person_1.jpg" alt="Image" class="img-fluid"
+                                             th:id="${'image-author-pic-' + number}" id="image-author-pic">
+                                    </figure>
+                                    <span class="d-inline-block mt-1">Bởi
+                                    <a href="#" th:id="${'image-author-title-' + number}" id="image-author-title">Tác giả ảnh</a>
+                                </span>
+                                    <span th:id="${'image-date-' + number}"
+                                          id="image-date">&nbsp;-&nbsp; Ngày chụp</span>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="mb-5">6 Comments</h3>
+                        <ul class="comment-list">
+                            <li class="comment">
+                                <div class="vcard">
+                                    <img src="images/person_1.jpg" alt="Image placeholder">
+                                </div>
+                                <div class="comment-body">
+                                    <h3>Jean Doe</h3>
+                                    <div class="meta">January 9, 2018 at 2:21pm</div>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                                    <p><a href="#" class="reply rounded">Reply</a></p>
+                                </div>
+                            </li>
+
+                        </ul>
+                        <div class="comment-form-wrap pt-5">
+                            <h3 class="mb-5">Leave a comment</h3>
+                            <form action="#" class="p-5 bg-light">
+                                <div class="form-group">
+                                    <label for="name">Name *</label>
+                                    <input type="text" class="form-control" id="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" class="form-control" id="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="website">Website</label>
+                                    <input type="url" class="form-control" id="website">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="message">Message</label>
+                                    <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Post Comment" class="btn btn-primary">
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="layout :: footer"></div>
+
+</div>
+
+<div th:replace="layout :: script"></div>
 <script>
     let query = "https://api.unsplash.com/collections/featured?page=1&client_id=IdusRIk1r39o-uOTKwKK0hmrf4Tb1Au9QI4L78NYtoQ"
     let request = new XMLHttpRequest();
@@ -13,13 +107,26 @@
     request.onload = function () {
         if (request.status === 200) {
             let response = JSON.parse(request.responseText);
-            console.log(response);
-            console.log(response[0]);
-            console.log(response[0].cover_photo.urls.full);
-            document.getElementById("img-of-the-day").setAttribute("src", response[0].cover_photo.urls.full);
+            for (let index = 0; index < 6; index++) {
+                let date = new Date(response[index].cover_photo.created_at);
+                let display = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+
+                document.getElementById("image-pic-" + (index + 1)).setAttribute("src", response[index].cover_photo.urls.full);
+                document.getElementById("image-link-" + (index + 1)).setAttribute("href", response[index].cover_photo.urls.full);
+                document.getElementById("image-title-" + (index + 1)).innerText = response[index].cover_photo.description;
+                document.getElementById("image-title-" + (index + 1)).setAttribute("href", response[index].cover_photo.links.html);
+                document.getElementById("image-author-title-" + (index + 1)).innerText = response[index].user.name;
+                document.getElementById("image-author-title-" + (index + 1)).setAttribute("href", response[index].user.links.html);
+                document.getElementById("image-category-" + (index + 1)).innerText = response[index].tags[0].title;
+                document.getElementById("image-author-pic-" + (index + 1)).setAttribute("src", response[index].user.profile_image.medium);
+
+                document.getElementById("image-date-" + (index + 1)).innerHTML = "&nbsp;" + "-" + "&nbsp;" + "Chụp ngày: " + "&nbsp;" + display;
+            }
         }
     }
     request.send();
+
 </script>
+
 </body>
 </html>
