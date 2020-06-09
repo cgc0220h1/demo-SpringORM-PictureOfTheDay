@@ -1,6 +1,7 @@
 package service.coment;
 
 import model.Comment;
+import model.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import repositories.CommentRepository;
 
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,6 +45,16 @@ public class CommentServiceImp implements CommentService {
     @Override
     public Page<Comment> findAll(Pageable pageable) {
         return commentRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Comment> findAllByPictureAndPostTimeBetween(Picture picture, Timestamp startTime, Timestamp endTime) {
+        List<Comment> comments = new LinkedList<>();
+        Iterable<Comment> iterable = commentRepository.findAllByPictureAndPostTimeBetween(picture, startTime, endTime);
+        for (Comment comment : iterable) {
+            comments.add(comment);
+        }
+        return comments;
     }
 
     @Override

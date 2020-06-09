@@ -18,7 +18,7 @@ public class Comment {
     private String content;
 
     @Column
-    private int love;
+    private int likes;
 
     @Column
     private int mark;
@@ -54,12 +54,12 @@ public class Comment {
         this.content = content;
     }
 
-    public int getLove() {
-        return love;
+    public int getLikes() {
+        return likes;
     }
 
-    public void setLove(int love) {
-        this.love = love;
+    public void setLikes(int love) {
+        this.likes = love;
     }
 
     public int getMark() {
@@ -92,7 +92,7 @@ public class Comment {
                 "id=" + id +
                 ", author='" + author + '\'' +
                 ", content='" + content + '\'' +
-                ", love=" + love +
+                ", love=" + likes +
                 ", mark=" + mark +
                 ", postTime=" + postTime +
                 ", picture=" + picture +
@@ -104,7 +104,7 @@ public class Comment {
         if (this == o) return true;
         if (!(o instanceof Comment)) return false;
         Comment comment = (Comment) o;
-        return getLove() == comment.getLove() &&
+        return getLikes() == comment.getLikes() &&
                 getMark() == comment.getMark() &&
                 Objects.equals(getId(), comment.getId()) &&
                 Objects.equals(getAuthor(), comment.getAuthor()) &&
@@ -115,6 +115,6 @@ public class Comment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getAuthor(), getContent(), getLove(), getMark(), getPostTime(), getPicture());
+        return Objects.hash(getId(), getAuthor(), getContent(), getLikes(), getMark(), getPostTime(), getPicture());
     }
 }

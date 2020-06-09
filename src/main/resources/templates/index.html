@@ -21,43 +21,48 @@
     <div class="site-section bg-light">
         <div class="container">
             <div class="row">
-                <th:block th:each="number:${#numbers.sequence(1,6)}">
+                <th:block th:each="entry, iterStat : ${commentMap.entrySet()}">
                     <div class="col-lg-6 mb-4 bg-white">
                         <div class="entry2">
-                            <a href="single.html" th:id="${'image-link-' + number}">
+                            <a href="single.html" th:id="${'image-link-' + iterStat.count}">
                                 <img src="images/img_1.jpg" alt="Image" class="img-fluid rounded"
-                                     th:id="${'image-pic-' + number}" id="image-pic">
+                                     th:id="${'image-pic-' + iterStat.count}" id="image-pic">
                             </a>
                             <div class="excerpt">
                             <span class="post-category text-white bg-secondary mb-3"
-                                  th:id="${'image-category-'+ number}" id="image-category">Chủ đề ảnh</span>
+                                  th:id="${'image-category-'+ iterStat.count}" id="image-category">Chủ đề ảnh</span>
                                 <h2>
-                                    <a href="single.html" th:id="${'image-title-' + number}" id="image-title">Tiêu đề
+                                    <a href="single.html" th:id="${'image-title-' + iterStat.count}" id="image-title">Tiêu
+                                        đề
                                         ảnh</a>
                                 </h2>
                                 <div class="post-meta align-items-center text-left clearfix">
                                     <figure class="author-figure mb-0 mr-3 float-left">
                                         <img src="images/person_1.jpg" alt="Image" class="img-fluid"
-                                             th:id="${'image-author-pic-' + number}" id="image-author-pic">
+                                             th:id="${'image-author-pic-' + iterStat.count}" id="image-author-pic">
                                     </figure>
                                     <span class="d-inline-block mt-1">Bởi
-                                    <a href="#" th:id="${'image-author-title-' + number}" id="image-author-title">Tác giả ảnh</a>
+                                    <a href="#" th:id="${'image-author-title-' + iterStat.count}"
+                                       id="image-author-title">Tác giả ảnh</a>
                                 </span>
-                                    <span th:id="${'image-date-' + number}"
+                                    <span th:id="${'image-date-' + iterStat.count}"
                                           id="image-date">&nbsp;-&nbsp; Ngày chụp</span>
                                 </div>
                             </div>
                         </div>
-                        <h3 class="mb-5" style="font-size: 26px"> Số lượng Comment hiển thị ở đây</h3>
+                        <h3 class="mb-5" style="font-size: 26px" th:text="${entry.getValue().size() + ' Bình Luận'}"> Số lượng
+                            Comment hiển thị ở đây</h3>
                         <ul class="comment-list">
-                            <li class="comment">
-                                <div class="comment-body" style="width: 553px">
-                                    <h3>Tên người comment</h3>
-                                    <div class="meta">Ngày bình luận</div>
-                                    <p>Nội dung bình luận</p>
-                                    <p><a href="#" class="reply rounded">Thích</a></p>
-                                </div>
-                            </li>
+                            <th:block th:each="comment : ${entry.getValue()}">
+                                <li class="comment">
+                                    <div class="comment-body" style="width: 553px">
+                                        <h3 th:text="${comment.author}">Tên người comment</h3>
+                                        <div class="meta" th:text="${comment.postTime}">Ngày bình luận</div>
+                                        <p th:text="${comment.content}">Nội dung bình luận</p>
+                                        <p><a href="#" class="reply rounded">Thích</a></p>
+                                    </div>
+                                </li>
+                            </th:block>
                         </ul>
                         <div class="comment-form-wrap pt-5">
                             <h3 class="mb-5" style="font-size: 26px">Để lại bình luận</h3>

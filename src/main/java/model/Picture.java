@@ -21,7 +21,7 @@ public class Picture {
     @Column
     private Timestamp postTime;
 
-    @OneToMany(mappedBy = "picture")
+    @OneToMany(mappedBy = "picture", fetch = FetchType.EAGER)
     private Collection<Comment> comments;
 
     public Long getId() {
