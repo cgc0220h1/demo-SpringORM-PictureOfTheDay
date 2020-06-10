@@ -21,68 +21,63 @@
     <div class="site-section bg-light">
         <div class="container">
             <div class="row">
-                <th:block th:each="entry, iterStat : ${commentMap.entrySet()}">
-                    <div class="col-lg-6 mb-4 bg-white">
-                        <div class="entry2">
-                            <a href="single.html" th:id="${'image-link-' + iterStat.count}">
-                                <img src="images/img_1.jpg" alt="Image" class="img-fluid rounded"
-                                     th:id="${'image-pic-' + iterStat.count}" id="image-pic">
-                            </a>
-                            <div class="excerpt">
+                <div class="col-lg-12 mb-4 bg-white">
+                    <div class="entry2">
+                        <a href="single.html" id="image-link">
+                            <img src="images/img_1.jpg" alt="Image" class="img-fluid rounded"
+                                 id="image-pic">
+                        </a>
+                        <div class="excerpt">
                             <span class="post-category text-white bg-secondary mb-3"
-                                  th:id="${'image-category-'+ iterStat.count}" id="image-category">Chủ đề ảnh</span>
-                                <h2>
-                                    <a href="single.html" th:id="${'image-title-' + iterStat.count}" id="image-title">Tiêu
-                                        đề
-                                        ảnh</a>
-                                </h2>
-                                <div class="post-meta align-items-center text-left clearfix">
-                                    <figure class="author-figure mb-0 mr-3 float-left">
-                                        <img src="images/person_1.jpg" alt="Image" class="img-fluid"
-                                             th:id="${'image-author-pic-' + iterStat.count}" id="image-author-pic">
-                                    </figure>
-                                    <span class="d-inline-block mt-1">Bởi
-                                    <a href="#" th:id="${'image-author-title-' + iterStat.count}"
-                                       id="image-author-title">Tác giả ảnh</a>
+                                  id="image-category">Chủ đề ảnh</span>
+                            <h2>
+                                <a href="single.html"
+                                   id="image-title">Tiêu đề ảnh</a>
+                            </h2>
+                            <div class="post-meta align-items-center text-left clearfix">
+                                <figure class="author-figure mb-0 mr-3 float-left">
+                                    <img src="images/person_1.jpg" alt="Image" class="img-fluid"
+                                         id="image-author-pic">
+                                </figure>
+                                <span class="d-inline-block mt-1">Bởi
+                                    <a href="#" id="image-author-title">Tác giả ảnh</a>
                                 </span>
-                                    <span th:id="${'image-date-' + iterStat.count}"
-                                          id="image-date">&nbsp;-&nbsp; Ngày chụp</span>
-                                </div>
+                                <span id="image-date">&nbsp;-&nbsp; Ngày chụp</span>
                             </div>
                         </div>
-                        <h3 class="mb-5" style="font-size: 26px" th:text="${entry.getValue().size() + ' Bình Luận'}"> Số lượng
-                            Comment hiển thị ở đây</h3>
-                        <ul class="comment-list">
-                            <th:block th:each="comment : ${entry.getValue()}">
-                                <li class="comment">
-                                    <div class="comment-body" style="width: 553px">
-                                        <h3 th:text="${comment.author}">Tên người comment</h3>
-                                        <div class="meta" th:text="${comment.postTime}">Ngày bình luận</div>
-                                        <p th:text="${comment.content}">Nội dung bình luận</p>
-                                        <p><a href="#" class="reply rounded">Thích</a></p>
-                                    </div>
-                                </li>
-                            </th:block>
-                        </ul>
-                        <div class="comment-form-wrap pt-5">
-                            <h3 class="mb-5" style="font-size: 26px">Để lại bình luận</h3>
-                            <form action="#" class="p-5 bg-light">
-                                <div class="form-group">
-                                    <label for="name">Họ tên</label>
-                                    <input type="text" class="form-control" id="name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="message">Bình luận</label>
-                                    <textarea name="" id="message" cols="30" rows="2" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" value="Đăng" class="btn btn-primary">
-                                </div>
-
-                            </form>
-                        </div>
                     </div>
-                </th:block>
+                    <h3 class="mb-5" style="font-size: 26px"
+                        th:text="${commentList.size() + ' Bình Luận'}"> Số lượng Comment hiển thị ở đây
+                    </h3>
+                    <ul class="comment-list">
+                        <th:block th:each="comment : ${commentList}">
+                            <li class="comment">
+                                <div class="comment-body" style="width: 1120px">
+                                    <h3 th:text="${comment.author}">Tên người comment</h3>
+                                    <div class="meta" th:text="${comment.postTime}">Ngày bình luận</div>
+                                    <p th:text="${comment.content}">Nội dung bình luận</p>
+                                    <p><a href="#" class="reply rounded">Thích</a></p>
+                                </div>
+                            </li>
+                        </th:block>
+                    </ul>
+                    <div class="comment-form-wrap pt-5">
+                        <h3 class="mb-5" style="font-size: 26px">Để lại bình luận</h3>
+                        <form action="#" class="p-5 bg-light">
+                            <div class="form-group">
+                                <label for="name">Họ tên</label>
+                                <input type="text" class="form-control" id="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Bình luận</label>
+                                <textarea name="" id="message" cols="30" rows="2" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Đăng" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -95,25 +90,23 @@
 <script>
     let query = "https://api.unsplash.com/collections/featured?page=1&client_id=IdusRIk1r39o-uOTKwKK0hmrf4Tb1Au9QI4L78NYtoQ"
     let request = new XMLHttpRequest();
+    let index = 0;
     request.open('GET', query);
     request.onload = function () {
         if (request.status === 200) {
             let response = JSON.parse(request.responseText);
-            for (let index = 0; index < 6; index++) {
-                let date = new Date(response[index].cover_photo.created_at);
-                let display = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+            let date = new Date(response[index].cover_photo.created_at);
+            let display = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
 
-                document.getElementById("image-pic-" + (index + 1)).setAttribute("src", response[index].cover_photo.urls.full);
-                document.getElementById("image-link-" + (index + 1)).setAttribute("href", response[index].cover_photo.urls.full);
-                document.getElementById("image-title-" + (index + 1)).innerText = response[index].cover_photo.description;
-                document.getElementById("image-title-" + (index + 1)).setAttribute("href", response[index].cover_photo.links.html);
-                document.getElementById("image-author-title-" + (index + 1)).innerText = response[index].user.name;
-                document.getElementById("image-author-title-" + (index + 1)).setAttribute("href", response[index].user.links.html);
-                document.getElementById("image-category-" + (index + 1)).innerText = response[index].tags[0].title;
-                document.getElementById("image-author-pic-" + (index + 1)).setAttribute("src", response[index].user.profile_image.medium);
-
-                document.getElementById("image-date-" + (index + 1)).innerHTML = "&nbsp;" + "-" + "&nbsp;" + "Chụp ngày: " + "&nbsp;" + display;
-            }
+            document.getElementById("image-pic").setAttribute("src", response[index].cover_photo.urls.full);
+            document.getElementById("image-link").setAttribute("href", response[index].cover_photo.urls.full);
+            document.getElementById("image-title").innerText = response[index].cover_photo.description;
+            document.getElementById("image-title").setAttribute("href", response[index].cover_photo.links.html);
+            document.getElementById("image-author-title").innerText = response[index].user.name;
+            document.getElementById("image-author-title").setAttribute("href", response[index].user.links.html);
+            document.getElementById("image-category").innerText = response[index].tags[0].title;
+            document.getElementById("image-author-pic").setAttribute("src", response[index].user.profile_image.medium);
+            document.getElementById("image-date").innerHTML = "&nbsp;" + "-" + "&nbsp;" + "Chụp ngày: " + "&nbsp;" + display;
         }
     }
     request.send();

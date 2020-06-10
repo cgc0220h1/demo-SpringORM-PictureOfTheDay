@@ -1,11 +1,15 @@
 package controllers;
 
 import model.Comment;
+import model.Picture;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import service.coment.CommentService;
 import service.picture.PictureService;
 
@@ -35,18 +39,20 @@ public class ImageController {
     }
 
     @GetMapping
-    public ModelAndView showHome() {
+    public RedirectView redirect() {
+        return new RedirectView("/picture?page=1&size=1");
+    }
+
+    @GetMapping("/picture")
+    public ModelAndView showHome(Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView("index");
         Timestamp startTime = Timestamp.valueOf(LocalDate.now().atStartOfDay());
         Timestamp endTime = Timestamp.valueOf(LocalDateTime.now());
-        Map<Long, List<Comment>> commentMap = new LinkedHashMap<>();
-        commentMap.put(1L, commentService.findAllByPictureAndPostTimeBetween(pictureService.findOne(1L), startTime, endTime));
-        commentMap.put(2L, commentService.findAllByPictureAndPostTimeBetween(pictureService.findOne(2L), startTime, endTime));
-        commentMap.put(3L, commentService.findAllByPictureAndPostTimeBetween(pictureService.findOne(3L), startTime, endTime));
-        commentMap.put(4L, commentService.findAllByPictureAndPostTimeBetween(pictureService.findOne(4L), startTime, endTime));
-        commentMap.put(5L, commentService.findAllByPictureAndPostTimeBetween(pictureService.findOne(5L), startTime, endTime));
-        commentMap.put(6L, commentService.findAllByPictureAndPostTimeBetween(pictureService.findOne(6L), startTime, endTime));
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("commentMap", commentMap);
+        Page<Picture> picturePage = pictureService.findAll(pageable);
+        Picture picture = picturePage.getContent().get(0);
+        List<Comment> commentList = commentService.findAllByPictureAndPostTimeBetween(picture, startTime, endTime);
+        modelAndView.addObject("picture", picture);
+        modelAndView.addObject("commentList", commentList);
         return modelAndView;
     }
 }
