@@ -124,8 +124,8 @@
             let date = new Date(response[index].created_at);
             let display = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
 
-            document.getElementById("image-pic").setAttribute("src", response[index].urls.full);
-            document.getElementById("image-link").setAttribute("href", response[index].urls.full);
+            document.getElementById("image-pic").setAttribute("src", response[index].urls.regular);
+            document.getElementById("image-link").setAttribute("href", response[index].urls.regular);
             document.getElementById("image-title").innerText = response[index].description;
             document.getElementById("image-title").setAttribute("href", response[index].links.html);
             document.getElementById("image-author-title").innerText = response[index].user.name;
