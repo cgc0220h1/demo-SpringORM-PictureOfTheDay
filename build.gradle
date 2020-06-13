@@ -24,4 +24,6 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-orm', version: '5.2.5.RELEASE'
     compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.2.3.RELEASE'
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.10.Final'
+
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
 }

@@ -4,9 +4,13 @@ import model.Comment;
 import model.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-import service.coment.CommentService;
+import service.comment.CommentService;
+import service.comment.exception.InvalidContentException;
 import service.picture.PictureService;
 
 import java.sql.Timestamp;
@@ -36,12 +40,22 @@ public class CommentController {
 
     @PostMapping("/submit/{image}")
     public RedirectView submitComment(@PathVariable("image") Long pictureId,
-                                      @ModelAttribute("newComment") Comment comment) {
-        Picture picture = pictureService.findOne(pictureId);
-        Timestamp postTime = Timestamp.valueOf(LocalDateTime.now());
-        comment.setPicture(picture);
-        comment.setPostTime(postTime);
-        commentService.save(comment);
-        return new RedirectView("/picture/" + (pictureId));
+                                      @Validated @ModelAttribute("newComment") Comment comment,
+                                      BindingResult bindingResult) throws InvalidContentException {
+        if (bindingResult.hasFieldErrors()) {
+            throw new InvalidContentException();
+        } else {
+            Picture picture = pictureService.findOne(pictureId);
+            Timestamp postTime = Timestamp.valueOf(LocalDateTime.now());
+            comment.setPicture(picture);
+            comment.setPostTime(postTime);
+            commentService.save(comment);
+        }
+        return new RedirectView("/images?page=" + (pictureId - 1));
+    }
+
+    @ExceptionHandler(InvalidContentException.class)
+    public ModelAndView handleException() {
+        return new ModelAndView("error");
     }
 }

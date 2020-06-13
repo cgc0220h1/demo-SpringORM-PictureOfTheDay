@@ -1,4 +1,4 @@
-package service.coment;
+package service.comment;
 
 import model.Comment;
 import model.Picture;

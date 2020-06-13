@@ -22,8 +22,8 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import repositories.CommentRepository;
 import repositories.PictureRepository;
-import service.coment.CommentService;
-import service.coment.CommentServiceImp;
+import service.comment.CommentService;
+import service.comment.CommentServiceImp;
 import service.picture.PictureService;
 import service.picture.PictureServiceImp;
 
