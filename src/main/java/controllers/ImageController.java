@@ -5,6 +5,7 @@ import model.Picture;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -40,18 +41,8 @@ public class ImageController {
         return LocalDate.now().format(formatter);
     }
 
-    @GetMapping
-    public RedirectView redirect() {
-        return new RedirectView("/images/1");
-    }
-
-    @GetMapping("/{id}")
-    public ModelAndView showPage(@PathVariable("id") int id) {
-        Pageable pageable = PageRequest.of(id - 1, 1);
-        return showHome(pageable);
-    }
-
-    public ModelAndView showHome(Pageable pageable) {
+    @GetMapping()
+    public ModelAndView showHome(@PageableDefault(size = 1) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("index");
         Timestamp startTime = Timestamp.valueOf(LocalDate.now().atStartOfDay());
         Timestamp endTime = Timestamp.valueOf(LocalDateTime.now());
