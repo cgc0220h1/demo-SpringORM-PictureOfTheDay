@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/images")
 public class ImageController {
     private final CommentService commentService;
 
@@ -42,10 +42,10 @@ public class ImageController {
 
     @GetMapping
     public RedirectView redirect() {
-        return new RedirectView("/picture/1");
+        return new RedirectView("/images/1");
     }
 
-    @GetMapping("/picture/{id}")
+    @GetMapping("/{id}")
     public ModelAndView showPage(@PathVariable("id") int id) {
         Pageable pageable = PageRequest.of(id - 1, 1);
         return showHome(pageable);
