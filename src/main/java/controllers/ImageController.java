@@ -3,10 +3,12 @@ package controllers;
 import model.Comment;
 import model.Picture;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -40,10 +42,15 @@ public class ImageController {
 
     @GetMapping
     public RedirectView redirect() {
-        return new RedirectView("/picture?page=1&size=1");
+        return new RedirectView("/picture/1");
     }
 
-    @GetMapping("/picture")
+    @GetMapping("/picture/{id}")
+    public ModelAndView showPage(@PathVariable("id") int id) {
+        Pageable pageable = PageRequest.of(id - 1, 1);
+        return showHome(pageable);
+    }
+
     public ModelAndView showHome(Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("index");
         Timestamp startTime = Timestamp.valueOf(LocalDate.now().atStartOfDay());
@@ -52,7 +59,9 @@ public class ImageController {
         Picture picture = picturePage.getContent().get(0);
         List<Comment> commentList = commentService.findAllByPictureAndPostTimeBetween(picture, startTime, endTime);
         modelAndView.addObject("picture", picture);
+        modelAndView.addObject("picturePage", picturePage);
         modelAndView.addObject("commentList", commentList);
+        modelAndView.addObject("newComment", new Comment());
         return modelAndView;
     }
 }

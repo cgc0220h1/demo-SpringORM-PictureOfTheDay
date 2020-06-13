@@ -50,7 +50,8 @@ public class CommentServiceImp implements CommentService {
     @Override
     public List<Comment> findAllByPictureAndPostTimeBetween(Picture picture, Timestamp startTime, Timestamp endTime) {
         List<Comment> comments = new LinkedList<>();
-        Iterable<Comment> iterable = commentRepository.findAllByPictureAndPostTimeBetween(picture, startTime, endTime);
+        Sort sort = Sort.by("postTime").descending();
+        Iterable<Comment> iterable = commentRepository.findAllByPictureAndPostTimeBetween(picture, startTime, endTime,sort);
         for (Comment comment : iterable) {
             comments.add(comment);
         }
