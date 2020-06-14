@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -29,6 +30,7 @@ public class Comment {
     private int mark;
 
     @Column
+    @PastOrPresent
     private Timestamp postTime;
 
     @ManyToOne()

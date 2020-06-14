@@ -1,16 +1,13 @@
 package config;
 
+import concern.Logger;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.config.PropertyResourceConfigurer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -35,8 +32,6 @@ import service.picture.PictureServiceImp;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Properties;
 
 @Configuration
@@ -44,6 +39,7 @@ import java.util.Properties;
 @ComponentScan("controllers")
 @EnableJpaRepositories("repositories")
 @EnableSpringDataWebSupport
+@EnableAspectJAutoProxy
 public class AppConfiguration implements ApplicationContextAware, WebMvcConfigurer {
     private ApplicationContext applicationContext;
 
@@ -128,17 +124,6 @@ public class AppConfiguration implements ApplicationContextAware, WebMvcConfigur
     }
 
     @Bean
-    public PropertySourcesPlaceholderConfigurer propertiesResource() {
-        PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
-        configurer.setIgnoreResourceNotFound(true);
-        configurer.setIgnoreUnresolvablePlaceholders(true);
-        List<Resource> resources = new LinkedList<>();
-        resources.add(new ClassPathResource("exclude-word.properties"));
-        configurer.setLocations(resources.toArray(new Resource[]{}));
-        return configurer;
-    }
-
-    @Bean
     public CommentService commentService(CommentRepository commentRepository) {
         return new CommentServiceImp(commentRepository);
     }
@@ -146,5 +131,10 @@ public class AppConfiguration implements ApplicationContextAware, WebMvcConfigur
     @Bean
     public PictureService pictureService(PictureRepository pictureRepository) {
         return new PictureServiceImp(pictureRepository);
+    }
+
+    @Bean
+    public Logger logger() {
+        return new Logger();
     }
 }

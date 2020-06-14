@@ -42,13 +42,14 @@ public class CommentController {
     public RedirectView submitComment(@PathVariable("image") Long pictureId,
                                       @Validated @ModelAttribute("newComment") Comment comment,
                                       BindingResult bindingResult) throws InvalidContentException {
+        Picture picture = pictureService.findOne(pictureId);
+        Timestamp postTime = Timestamp.valueOf(LocalDateTime.now());
+        comment.setPicture(picture);
+        comment.setPostTime(postTime);
+
         if (bindingResult.hasFieldErrors()) {
             throw new InvalidContentException();
         } else {
-            Picture picture = pictureService.findOne(pictureId);
-            Timestamp postTime = Timestamp.valueOf(LocalDateTime.now());
-            comment.setPicture(picture);
-            comment.setPostTime(postTime);
             commentService.save(comment);
         }
         return new RedirectView("/images?page=" + (pictureId - 1));

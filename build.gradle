@@ -26,4 +26,6 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.10.Final'
 
     compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
+
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.4'
 }
