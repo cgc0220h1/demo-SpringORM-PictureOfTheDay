@@ -8,6 +8,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "comment")
 public class Comment {
+    @Transient
+    private static final String BAD_WORDS = "địt|địt mẹ|đm|đcm|vl|vãi lồn";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,7 +19,7 @@ public class Comment {
     private String author;
 
     @Column
-    @Pattern(regexp = "^.*(đm|đcm|địt|địt mẹ|địt mẹ mày).*$", message = "Invalid Comment")
+    @Pattern(regexp = "^.*(" + BAD_WORDS + ").*$", message = "Invalid Comment")
     private String content;
 
     @Column

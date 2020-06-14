@@ -1,11 +1,16 @@
 package config;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.config.PropertyResourceConfigurer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -30,6 +35,8 @@ import service.picture.PictureServiceImp;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 @Configuration
@@ -118,6 +125,17 @@ public class AppConfiguration implements ApplicationContextAware, WebMvcConfigur
         registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
         registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:/static/fonts/");
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
+    }
+
+    @Bean
+    public PropertySourcesPlaceholderConfigurer propertiesResource() {
+        PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+        configurer.setIgnoreResourceNotFound(true);
+        configurer.setIgnoreUnresolvablePlaceholders(true);
+        List<Resource> resources = new LinkedList<>();
+        resources.add(new ClassPathResource("exclude-word.properties"));
+        configurer.setLocations(resources.toArray(new Resource[]{}));
+        return configurer;
     }
 
     @Bean
